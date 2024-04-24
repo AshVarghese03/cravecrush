@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "413461348289",
+    "project_id": "cravecrush-a8ced",
+    "storage_bucket": "cravecrush-a8ced.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413461348289:android:5f6f5b1ebcd2b6e230b940",
+        "android_client_info": {
+          "package_name": "com.example.cravecrush"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBu2QhV1F02oNc9tAk-bB2YJoG87WgUOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
