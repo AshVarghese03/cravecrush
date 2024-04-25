@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +16,7 @@ class _WalletPageState extends State<WalletPage> {
   late int numCigarettes;
   late int smokingDays;
   late int nonSmokingDays;
+  late String latestEntryStatus;
 
   @override
   void initState() {
@@ -43,7 +45,9 @@ class _WalletPageState extends State<WalletPage> {
         });
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      if (kDebugMode) {
+        print('Error fetching user data: $e');
+      }
     }
     _fetchSmokingDays();
   }
@@ -55,9 +59,13 @@ class _WalletPageState extends State<WalletPage> {
       setState(() {
         smokingDays = snapshot.docs.where((doc) => doc.data()['status'] == 'Yes').length;
         nonSmokingDays = snapshot.docs.where((doc) => doc.data()['status'] == 'No').length;
+        // Get the latest entry status
+        latestEntryStatus = snapshot.docs.isEmpty ? '' : snapshot.docs.last.data()['status'];
       });
     } catch (e) {
-      print('Error fetching smoking days: $e');
+      if (kDebugMode) {
+        print('Error fetching smoking days: $e');
+      }
     }
   }
 
@@ -65,8 +73,24 @@ class _WalletPageState extends State<WalletPage> {
     return numCigarettes * pricePerCigarette * nonSmokingDays;
   }
 
+  double _calculateExpenseToday() {
+    // If there's no latest entry status or if it's 'Yes' (smoked), then the expense today will be 0
+    if (latestEntryStatus == 'Yes') {
+      return numCigarettes * pricePerCigarette;
+    }
+    else { // Otherwise, calculate the expense for the day
+      return 0.0;
+    }
+  }
+
   double _calculateDailySavings() {
-    return numCigarettes * pricePerCigarette;
+    // If there's no latest entry status or if it's 'No' (did not smoke), then calculate the savings for the day
+    if (latestEntryStatus == 'No') {
+      return numCigarettes * pricePerCigarette;
+    }
+    else{
+      return 0.0;
+    }
   }
 
   double _calculateTotalSpent() {
@@ -77,60 +101,67 @@ class _WalletPageState extends State<WalletPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Wallet',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.green,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _buildInfoCard(
               title: 'Total No of Days',
               value: '${smokingDays + nonSmokingDays}',
               icon: Icons.calendar_today,
               color: Colors.blue,
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _buildInfoCard(
               title: 'No of Smoking Days',
               value: '$smokingDays',
               icon: Icons.smoking_rooms,
               color: Colors.red,
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _buildInfoCard(
               title: 'No of Non-Smoking Days',
               value: '$nonSmokingDays',
               icon: Icons.check_circle_outline,
               color: Colors.green,
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _buildInfoCard(
               title: 'Total Amount Saved',
               value: '\u20B9${_calculateTotalSavings().toStringAsFixed(2)}',
               icon: Icons.attach_money,
               color: Colors.green,
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
+            _buildInfoCard(
+              title: 'Expense Today',
+              value: '\u20B9${_calculateExpenseToday().toStringAsFixed(2)}',
+              icon: Icons.money_off,
+              color: Colors.red,
+            ),
+            const SizedBox(height: 20.0),
             _buildInfoCard(
               title: 'Savings Today',
               value: '\u20B9${_calculateDailySavings().toStringAsFixed(2)}',
               icon: Icons.monetization_on,
               color: Colors.green,
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _buildInfoCard(
               title: 'Total Amount Spent',
               value: '\u20B9${_calculateTotalSpent().toStringAsFixed(2)}',
               icon: Icons.money_off,
               color: Colors.red,
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
           ],
         ),
       ),
@@ -142,7 +173,7 @@ class _WalletPageState extends State<WalletPage> {
       elevation: 4.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -153,7 +184,7 @@ class _WalletPageState extends State<WalletPage> {
                   color: color,
                   size: 24.0,
                 ),
-                SizedBox(width: 10.0),
+                const SizedBox(width: 10.0),
                 Text(
                   title,
                   style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.grey[700]),
@@ -162,7 +193,7 @@ class _WalletPageState extends State<WalletPage> {
             ),
             Text(
               value,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black),
+              style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black),
             ),
           ],
         ),

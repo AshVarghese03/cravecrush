@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cravecrush/screens/signup_screen.dart'; // Import your sign-up page
 import 'package:cravecrush/screens/home_screen.dart'; // Import your home page
+import 'package:cravecrush/screens/forgot_password_screen.dart'; // Import your forgot password page
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  bool _isPasswordVisible = false; // Track password visibility
   String _errorMessage = '';
 
   Future<void> _signInWithEmailAndPassword(BuildContext context) async {
@@ -51,6 +52,13 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const SignUpPage()),
+    );
+  }
+
+  void _navigateToForgotPasswordPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
     );
   }
 
@@ -100,8 +108,18 @@ class _LoginPageState extends State<LoginPage> {
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                   icon: Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true,
+                obscureText: !_isPasswordVisible, // Toggle password visibility
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
@@ -135,6 +153,11 @@ class _LoginPageState extends State<LoginPage> {
               TextButton(
                 onPressed: () => _navigateToSignUpPage(context),
                 child: const Text('Don\'t have an account? Sign Up'),
+              ),
+              const SizedBox(height: 8),
+              TextButton(
+                onPressed: () => _navigateToForgotPasswordPage(context),
+                child: const Text('Forgot Password?'),
               ),
             ],
           ),

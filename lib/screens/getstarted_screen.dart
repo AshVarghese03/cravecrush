@@ -25,7 +25,6 @@ class _GetStartedPageState extends State<GetStartedPage> {
     {},
     {},
     {
-      'times_to_smoke': [],
       'reasons_started': [],
       'reasons_to_quit': [],
       'other_reason_started': '',
@@ -47,7 +46,6 @@ class _GetStartedPageState extends State<GetStartedPage> {
             'gender': _userData[0]['gender'],
             'num_cigarettes': _userData[1]['num_cigarettes'],
             'price_per_cigarette': _userData[1]['price_per_cigarette'],
-            'times_to_smoke': _userData[2]['times_to_smoke'],
             'reasons_started': _userData[2]['reasons_started'],
             'other_reason_started': _userData[2]['other_reason_started'],
             'reasons_to_quit': _userData[2]['reasons_to_quit'],
@@ -74,19 +72,6 @@ class _GetStartedPageState extends State<GetStartedPage> {
     }
   }
 
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (pickedTime != null) {
-      setState(() {
-        final String formattedTime = '${pickedTime.hour}:${pickedTime.minute}';
-        List<String> timesToSmoke = List<String>.from(_userData[2]['times_to_smoke']);
-        timesToSmoke.add(formattedTime);
-      });
-    }
-  }
 
   void _previousPage() {
     if (_currentPageIndex > 0) {

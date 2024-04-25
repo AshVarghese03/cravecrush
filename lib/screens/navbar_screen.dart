@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cravecrush/screens/user_profile_screen.dart';
-import 'callender_screen.dart';
 import 'stats_screen.dart';
+import 'about_us.dart'; // Import your AboutUsPage
 
 class NavBar extends StatelessWidget {
   const NavBar({Key? key});
@@ -15,26 +15,26 @@ class NavBar extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data == null) {
-            return Text('User not logged in');
+            return const Text('User not logged in');
           } else {
             User? user = snapshot.data;
             return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
               future: FirebaseFirestore.instance.collection('users').doc(user!.uid).get(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (userSnapshot.hasError) {
                   return Text('Error: ${userSnapshot.error}');
                 } else if (!userSnapshot.hasData || userSnapshot.data == null) {
-                  return Text('User data not found');
+                  return const Text('User data not found');
                 } else {
                   Map<String, dynamic>? userData = userSnapshot.data!.data();
                   if (userData == null) {
-                    return Text('User data not found');
+                    return const Text('User data not found');
                   }
                   String? firstName = userData['first_name'] as String?;
                   String? lastName = userData['last_name'] as String?;
@@ -47,8 +47,8 @@ class NavBar extends StatelessWidget {
                         accountEmail: Text(email ?? ''),
                       ),
                       ListTile(
-                        leading: Icon(Icons.account_circle),
-                        title: Text('Profile'),
+                        leading: const Icon(Icons.account_circle),
+                        title: const Text('Profile'),
                         onTap: () async {
                           Navigator.push(
                             context,
@@ -56,21 +56,34 @@ class NavBar extends StatelessWidget {
                           );
                         },
                       ),
-
                       ListTile(
-                        leading: Icon(Icons.line_axis),
-                        title: Text('Stats'),
+                        leading: const Icon(Icons.message),
+                        title: const Text('Messages'),
+                        onTap: () => print('Message tapped'),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.line_axis),
+                        title: const Text('Stats'),
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => StatsPage()),
+                            MaterialPageRoute(builder: (context) => const StatsPage()),
                           );
                         },
                       ),
-
                       ListTile(
-                        leading: Icon(Icons.logout),
-                        title: Text('Logout'),
+                        leading: const Icon(Icons.message),
+                        title: const Text('About us'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AboutUsPage()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.logout),
+                        title: const Text('Logout'),
                         onTap: () => FirebaseAuth.instance.signOut(),
                       ),
                     ],
