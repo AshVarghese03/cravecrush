@@ -56,11 +56,7 @@ class NavBar extends StatelessWidget {
                           );
                         },
                       ),
-                      ListTile(
-                        leading: Icon(Icons.message),
-                        title: Text('Messages'),
-                        onTap: () => print('Message tapped'),
-                      ),
+
                       ListTile(
                         leading: Icon(Icons.line_axis),
                         title: Text('Stats'),
@@ -71,16 +67,7 @@ class NavBar extends StatelessWidget {
                           );
                         },
                       ),
-                      ListTile(
-                        leading: Icon(Icons.share),
-                        title: Text('Share'),
-                        onTap: () => print('share tapped'),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.notifications),
-                        title: Text('Notification'),
-                        onTap: () => print('notification tapped'),
-                      ),
+
                       ListTile(
                         leading: Icon(Icons.logout),
                         title: Text('Logout'),

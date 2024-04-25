@@ -373,7 +373,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             .collection('entries')
             .get();
 
-        // Initialize smoke-free hours
+        // Initialize ic_launcher-free hours
         int smokeFreeHours = 0;
 
         // Iterate through all entries
@@ -381,13 +381,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           Map<String, dynamic> data = doc.data();
           String status = data['status'];
           if (status == 'No') {
-            smokeFreeHours += 24; // Assuming each entry represents 24 hours of being smoke-free
+            smokeFreeHours += 24; // Assuming each entry represents 24 hours of being ic_launcher-free
           }
         });
 
         return smokeFreeHours;
       } catch (e) {
-        print('Error fetching smoke-free hours: $e');
+        print('Error fetching ic_launcher-free hours: $e');
         return 0;
       }
     } else {
@@ -411,7 +411,7 @@ class SmokePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Create smoke effect using a series of circles with varying opacity
+    // Create ic_launcher effect using a series of circles with varying opacity
     final Paint paint = Paint()
       ..color = Colors.grey.withOpacity(0.2)
       ..style = PaintingStyle.fill;
@@ -434,4 +434,3 @@ class SmokePainter extends CustomPainter {
     return true;
   }
 }
-

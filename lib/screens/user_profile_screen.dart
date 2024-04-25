@@ -57,7 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
         _gender = data['gender'] ?? '';
         _numCigarettesController.text = data['num_cigarettes']?.toString() ?? '';
         _pricePerCigaretteController.text = data['price_per_cigarette']?.toString() ?? '';
-        _timesToSmoke = List<String>.from(data['times_to_smoke'] ?? []);
         _reasonsStarted = List<String>.from(data['reasons_started'] ?? []);
         _otherReasonStarted = data['other_reason_started'] ?? '';
         _reasonsToQuit = List<String>.from(data['reasons_to_quit'] ?? []);
@@ -180,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Times to smoke:',
+          '',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         Wrap(
