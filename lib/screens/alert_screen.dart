@@ -287,24 +287,39 @@ class _VideoFloatingActionButton extends StatelessWidget {
 class VideoPage extends StatelessWidget {
   final List<Map<String, String>> videos = [
     {
-      'name': '',
+      'name': 'Video 1',
       'url': 'https://www.youtube.com/watch?v=kJasaMlgzNs',
       'thumbnail': 'assets/images/thumbnail1.webp',
     },
     {
-      'name': '',
+      'name': 'Video 2',
       'url': 'https://www.youtube.com/watch?v=NKE9BQ5QVfE',
       'thumbnail': 'assets/images/thumbnail2.webp',
     },
     {
-      'name': '',
+      'name': 'Video 3',
       'url': 'https://www.youtube.com/watch?v=B7N9JNa0GJQ',
       'thumbnail': 'assets/images/thumbnail3.webp',
     },
     {
-      'name': '',
+      'name': 'Video 4',
       'url': 'https://www.youtube.com/watch?v=9C4B26xt9QQ',
       'thumbnail': 'assets/images/thumbnail4.webp',
+    },
+    {
+      'name': 'Video 5',
+      'url': 'https://www.youtube.com/watch?v=bv73pwFRVPo',
+      'thumbnail': 'assets/images/thumbnail5.webp',
+    },
+    {
+      'name': 'Video 6',
+      'url': 'https://www.youtube.com/watch?v=XYFrhX3Rs6s',
+      'thumbnail': 'assets/images/thumbnail6.webp',
+    },
+    {
+      'name': 'Video 7',
+      'url': 'https://www.youtube.com/watch?v=ytEt_4yjNKI',
+      'thumbnail': 'assets/images/thumbnail7.webp',
     },
   ];
 
@@ -328,26 +343,53 @@ class VideoPage extends StatelessWidget {
               }
             },
             child: Container(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    height: 240,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: AssetImage(video['thumbnail']!),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    video['name']!,
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
                   ),
                 ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Stack(
+                      alignment: Alignment.bottomLeft,
+                      children: [
+                        Image.asset(
+                          video['thumbnail']!,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0),
+                            ),
+                          ),
+                          child: Text(
+                            video['name']!,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -356,3 +398,4 @@ class VideoPage extends StatelessWidget {
     );
   }
 }
+
