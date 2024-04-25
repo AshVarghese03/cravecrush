@@ -219,83 +219,92 @@ class _GetStartedPageState extends State<GetStartedPage> {
   }
 
   Widget _buildSmokingProfileSection() {
-    return Form(
-      key: _formKeys[1],
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Smoking Profile',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Number of cigarettes per day'),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Please enter the number of cigarettes';
-                }
-                return null;
-              },
-              onSaved: (value) => _userData[1]['num_cigarettes'] = int.tryParse(value ?? '') ?? 0,
-            ),
-            SizedBox(height: 12),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Price per cigarette'),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Please enter the price per cigarette';
-                }
-                return null;
-              },
-              onSaved: (value) => _userData[1]['price_per_cigarette'] = double.tryParse(value ?? '') ?? 0.0,
-            ),
-            SizedBox(height: 20),
-            if (_userData[2]['times_to_smoke'] != null)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Select the time you smoke more oftenly:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8.0,
-                    children: List.generate(
-                      _userData[2]['times_to_smoke'].length,
-                          (index) => Chip(
-                        label: Text(_userData[2]['times_to_smoke'][index]),
-                        onDeleted: () {
-                          setState(() {
-                            _userData[2]['times_to_smoke'].removeAt(index);
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Form(
+            key: _formKeys[1],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                ElevatedButton(
-                  onPressed: () => _selectTime(context),
-                  child: Text('Add Time'),
+                Text(
+                  'Smoking Profile',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
+                SizedBox(height: 20),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Number of cigarettes per day'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter the number of cigarettes';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _userData[1]['num_cigarettes'] = int.tryParse(value ?? '') ?? 0,
+                ),
+                SizedBox(height: 12),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Price per cigarette'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter the price per cigarette';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _userData[1]['price_per_cigarette'] = double.tryParse(value ?? '') ?? 0.0,
+                ),
+                SizedBox(height: 20),
+                if (_userData[2]['times_to_smoke'] != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8.0,
+                        children: List.generate(
+                          _userData[2]['times_to_smoke'].length,
+                              (index) => Chip(
+                            label: Text(_userData[2]['times_to_smoke'][index]),
+                            onDeleted: () {
+                              setState(() {
+                                _userData[2]['times_to_smoke'].removeAt(index);
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
-          ],
-        ),
+          ),
+          Expanded(child: SizedBox()), // Spacer to push the "Previous" button to the bottom
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0), // Add padding to push the "Previous" button down
+            child: ElevatedButton(
+              onPressed: _previousPage,
+              child: Text(
+                'Previous',
+                style: TextStyle(fontSize: 18.0), // Increase font size
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16.0), // Match vertical padding with the "Next" button
+                minimumSize: Size(double.infinity, 50.0), // Match minimum size with the "Next" button
+                // Add other styling properties to match the "Next" button if needed
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
+
+
 
 
   Widget _buildReasonsSection() {
@@ -355,24 +364,29 @@ class _GetStartedPageState extends State<GetStartedPage> {
                 onSaved: (value) => _userData[2]['other_reason_quit'] = value ?? '',
               ),
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
                   onPressed: _previousPage,
-                  child: Text('Previous'),
+                  child: Text(
+                    'Previous',
+                    style: TextStyle(fontSize: 18.0), // Increase font size
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16.0), // Match vertical padding with the "Next" button
+                    minimumSize: Size(double.infinity, 50.0), // Match minimum size with the "Next" button
+                    // Add other styling properties to match the "Next" button if needed
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () => _submitForm(context),
-                  child: Text(_currentPageIndex == _formKeys.length - 1 ? 'Submit' : 'Next'),
-                ),
-              ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
 
 
   Widget _buildMultiSelectFormField({
